@@ -7,6 +7,9 @@ typedef struct {
     float media;
 } Estudante;
 
+
+
+
 struct no {
     Estudante dado;
     struct no* prox;

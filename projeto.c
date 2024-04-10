@@ -7,9 +7,6 @@ typedef struct {
     float media;
 } Estudante;
 
-
-
-
 struct no {
     Estudante dado;
     struct no* prox;
@@ -153,43 +150,41 @@ int tamanho() {
     return cont;
 }
 
+void lerLista(Lista *lista) {
+  FILE *file = fopen("aluno.b", "rb");
+  Estudante e;
+  while (fread(&e, sizeof(Estudante), 1, file)) {
+      adicionaFim(lista, e);
+  }
+  fclose(file);
+}
+
+void salvaLista(Lista *lista) {
+  FILE *file = fopen("aluno.b", "wb");
+  No* pi;
+  for (pi = lista->inicio; pi != NULL; pi = pi->prox) {
+    fwrite(&pi->dado, sizeof(Estudante), 1, file);
+  }
+  fclose(file);
+}
+
 void excluir(int mat) {
     Lista lista;
     lista.inicio = NULL;
-    FILE *file = fopen("aluno.b", "rb");
-    Estudante e;
-    while (fread(&e, sizeof(Estudante), 1, file)) {
-        adicionaFim(&lista, e);
-    }
-    fclose(file);
-    file = fopen("aluno.b", "wb");
+    lerLista(&lista);
     deletar(&lista, mat);
-    No* pi;
-    for (pi = lista.inicio; pi != NULL; pi = pi->prox) {
-      fwrite(&pi->dado, sizeof(Estudante), 1, file);
-    }
-    fclose(file);
+    salvaLista(&lista);
 }
 
 void editar(int mat) {
     Lista lista;
     lista.inicio = NULL;
-    FILE *file = fopen("aluno.b", "rb");
-    Estudante e;
-    while (fread(&e, sizeof(Estudante), 1, file)) {
-        adicionaFim(&lista, e);
-    }
-    fclose(file);
-    file = fopen("aluno.b", "wb");
+    lerLista(&lista);
     float media;
     printf("Informe a nota nota:\n");
     scanf("%f", &media);
     editarMedia(&lista, mat, media);
-    No* pi;
-    for (pi = lista.inicio; pi != NULL; pi = pi->prox) {
-      fwrite(&pi->dado, sizeof(Estudante), 1, file);
-    }
-    fclose(file);
+    salvaLista(&lista);
 }
 
 int main() {

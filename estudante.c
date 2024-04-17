@@ -1,22 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "estudante.h"
 
-typedef struct {
+struct estudante {
     int mat;
     char nome[50];
     float media;
-} Estudante;
+};
 
 struct no {
     Estudante dado;
     struct no* prox;
 };
 
-typedef struct no No;
-
-typedef struct {
+struct lista{
     No* inicio;
-} Lista;
+};
 
 void adicionaFim(Lista *lista, Estudante e) {
     No* novo = (No*) malloc(sizeof(No));
@@ -91,18 +90,6 @@ void deletar(Lista *lista, int mat) {
 void ler(Estudante *e) {
     printf("Informe os dados do estudante:\n");
     scanf("%d %s %f", &e->mat, e->nome, &e->media);
-}
-
-void menu() {
-    printf("Escolha uma opcao:\n");
-    printf("1 - cadastar aluno\n");
-    printf("2 - listar alunos\n");
-    printf("3 - buscar aluno\n");
-    printf("4 - quantidade de alunos\n");
-    printf("5 - excluir um aluno\n");
-    printf("6 - editar um aluno\n");
-    printf("0 - sair\n");
-    printf("===================\n");
 }
 
 void cadastrar() {
@@ -185,38 +172,4 @@ void editar(int mat) {
     scanf("%f", &media);
     editarMedia(&lista, mat, media);
     salvaLista(&lista);
-}
-
-int main() {
-    int op;
-    menu();
-    scanf("%d", &op);
-    while (op != 0) {
-        if (op == 1) {
-           cadastrar();
-        } else if (op == 2) {
-            listar();
-        } else if (op == 3) {
-            int mat;
-            printf("Informe a matricula:\n");
-            scanf("%d", &mat);
-            buscar(mat);
-        } else if (op == 4) {
-            int n = tamanho();
-            printf("Quantidade alunos: %d\n", n);
-        } else if (op == 5) {
-            int mat;
-            printf("Informe a matricula para exclusao:\n");
-            scanf("%d", &mat);
-            excluir(mat);
-        } else if (op == 6) {
-            int mat;
-            printf("Informe a matricula do aluno para edicao:\n");
-            scanf("%d", &mat);
-            editar(mat);
-        }
-        menu();
-        scanf("%d", &op);
-    }
-    return 0;
 }
